@@ -115,10 +115,15 @@ export const SettingsModal = ({ isOpen, onClose, settings, onSave, onBgmUpload, 
                                     </div>
                                     <button 
                                         onClick={async () => {
-                                            if (window.aistudio && window.aistudio.openSelectKey) {
-                                                await window.aistudio.openSelectKey();
-                                            } else {
-                                                alert("APIキー選択機能はAI Studio環境でのみ利用可能です。");
+                                            try {
+                                                if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
+                                                    await window.aistudio.openSelectKey();
+                                                } else {
+                                                    alert("APIキー選択機能はAI Studio環境でのみ利用可能です。");
+                                                }
+                                            } catch (e) {
+                                                console.error("Failed to open key selector:", e);
+                                                alert("APIキー選択画面を開けませんでした。");
                                             }
                                         }}
                                         className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-bold text-xs uppercase tracking-widest transition-all shadow-lg shadow-indigo-500/20 active:scale-95"

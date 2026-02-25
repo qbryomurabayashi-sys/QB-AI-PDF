@@ -2,15 +2,6 @@ import { GoogleGenAI, Modality } from "@google/genai";
 import { VOICE_PROFILES } from '@/types';
 import { pcmToWav, sleep } from '@/utils';
 
-// Primary key from environment (GEMINI_API_KEY is default, API_KEY is from user selection)
-const RAW_KEYS = [
-    process.env.API_KEY,
-    process.env.GEMINI_API_KEY
-];
-
-// Filter out invalid keys and duplicates to ensure clean rotation
-const API_KEYS = Array.from(new Set(RAW_KEYS.filter(k => !!k && k !== 'PLACEHOLDER_API_KEY')));
-
 export class GeminiService {
     /**
      * Executes an API operation with key rotation and retry logic.
@@ -19,6 +10,13 @@ export class GeminiService {
     static async withKeyRotation(operation) {
         let lastError;
         
+        // Always get the freshest keys from the environment
+        const RAW_KEYS = [
+            process.env.API_KEY,
+            process.env.GEMINI_API_KEY
+        ];
+        const API_KEYS = Array.from(new Set(RAW_KEYS.filter(k => !!k && k !== 'PLACEHOLDER_API_KEY')));
+
         if (API_KEYS.length === 0) {
             throw new Error("No valid API Key found. Please set GEMINI_API_KEY in your environment.");
         }
@@ -42,7 +40,7 @@ export class GeminiService {
                 // Handle key selection error
                 if (error.message && error.message.includes("Requested entity was not found")) {
                     console.error("API Key selection error. Prompting user to re-select.");
-                    if (window.aistudio) {
+                    if (window.aistudio && typeof window.aistudio.openSelectKey === 'function') {
                         await window.aistudio.openSelectKey();
                     }
                 }

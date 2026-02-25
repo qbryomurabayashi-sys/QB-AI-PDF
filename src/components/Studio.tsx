@@ -51,8 +51,8 @@ export const StudioHeader = ({ settings, isGenerating, isExporting, hasSlides, h
                                 </button>
                                 {showGenMenu && (
                                     <>
-                                        <div className="fixed inset-0 z-40" onClick={() => setShowGenMenu(false)} />
-                                        <div className="absolute top-full right-0 mt-2 w-64 bg-[#18181b] border border-white/10 rounded-xl shadow-2xl z-50 py-1 flex flex-col animate-in fade-in zoom-in-95 duration-200">
+                                        <div className="fixed inset-0 z-[100]" onClick={() => setShowGenMenu(false)} />
+                                        <div className="absolute top-full right-0 mt-2 w-64 bg-[#18181b] border border-white/10 rounded-xl shadow-2xl z-[110] py-1 flex flex-col animate-in fade-in zoom-in-95 duration-200">
                                             <button 
                                                 onClick={() => { onGenerateBatch(1); setShowGenMenu(false); }}
                                                 className="flex items-center gap-3 px-4 py-3 text-left hover:bg-white/5 transition-colors"
