@@ -1,0 +1,5 @@
+{
+  "name": "AI Slide Studio",
+  "description": "Transform static PDF slides into cinematic narrated videos using Gemini AI.",
+  "requestFramePermissions": []
+}
